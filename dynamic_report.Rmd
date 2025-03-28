@@ -1,0 +1,75 @@
+---
+title: My dynamic report
+output: html_fragment
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
+library(tidyverse)
+#load data
+logged_data = read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vRXkzGqVlIZkrE4c25wv_iRNJL1CLIVk1zudex755Dy6ZEIVFT5rz35dQ4EjOMGf0ieg9n_0qMZBilh/pub?output=csv")
+
+latest_data = rename(logged_data,
+                     physical_activity_type = 2,
+                     hours_per_week = 3,
+                     important = 4,
+                     want_more_time = 5)
+```
+
+```{css}
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  margin: 20px;
+}
+p {
+  color: #555;
+}
+
+```
+
+## Physical Activity Analysis
+```{r}
+#calculating the mean hours per week spent on physical activity
+hours_per_week_mean <- latest_data$hours_per_week %>%
+  mean(na.rm = TRUE)
+
+#getting the max hours someone exercised out of data sample
+hours_per_week_max <- latest_data$hours_per_week %>%
+  max(na.rm = TRUE)
+
+
+#bar charts
+
+#physical activity type coloured by if individual want more time for physical activity
+physical_activity_by_want_time <- latest_data %>%
+  ggplot() +
+  geom_bar(aes(y= physical_activity_type, fill = want_more_time)) +
+  labs(title = "Want more time by physical activity type",
+       subtitle = "Types of Physical activity, coloured by 'want more time'",
+       caption = "Sourced from Google Forms",
+       x = "Number of people",
+       y = "Type of Physical Activity")
+
+
+#number of people that find physical activity important
+no_of_people_importance <- latest_data %>%
+  ggplot() +
+  geom_bar(aes(x=important)) +
+  labs(title = "Importance of Physical Activity",
+       subtitle = "Is physical activity important?",
+       caption="Sourced from Google Forms",
+       x = "Is physical activity important?",
+       y = "Number of people")
+
+
+```
+On average, participants engage in **`r round(hours_per_week_mean, 1)` hours** of physical activity **per week**.
+
+The most active participant exercised for **`r hours_per_week_max` hours in a single week!**
+
+```{r}
+physical_activity_by_want_time
+no_of_people_importance
+```
+
