@@ -17,20 +17,41 @@ latest_data = rename(logged_data,
 ```
 
 ```{css}
+@import url('https://fonts.googleapis.com/css2?family=Carlito:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Carlito", sans-serif;
   line-height: 1.6;
-  margin: 20px;
+  margin: 0 auto;
+  
+  width: 75%;
+  max-width: 850px;
 }
 p {
   color: #555;
+}
+
+img{
+  margin: 30px auto;
+  display: block;
+  width: 70%;
+  
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  
+}
+
+pre{
+  margin: 50px auto;
+  width: 90%;
 }
 
 ```
 
 ## Physical Activity Analysis
 ```{r}
-#calculating the mean hours per week spent on physical activity
+#calculating the mean hours per week spent on physical activity 
 hours_per_week_mean <- latest_data$hours_per_week %>%
   mean(na.rm = TRUE)
 
@@ -55,7 +76,7 @@ physical_activity_by_want_time <- latest_data %>%
 #number of people that find physical activity important
 no_of_people_importance <- latest_data %>%
   ggplot() +
-  geom_bar(aes(x=important)) +
+  geom_bar(aes(x=important, fill=important)) +
   labs(title = "Importance of Physical Activity",
        subtitle = "Is physical activity important?",
        caption="Sourced from Google Forms",
@@ -64,12 +85,20 @@ no_of_people_importance <- latest_data %>%
 
 
 ```
+### Some Summary Statistics!
 On average, participants engage in **`r round(hours_per_week_mean, 1)` hours** of physical activity **per week**.
 
 The most active participant exercised for **`r hours_per_week_max` hours in a single week!**
+![](https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExY2VyeXFqcnhnMHN1YnNjaWVwNnFpMWsxNjl1cnl6ZHFldmNpbzl3OSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Za7ZWOU0su5BC/giphy.gif)
 
+### Bar Charts
+The bar graph below indicates that gym/strength training are the most popular physical activities among participants who wish they had more time to engage. Interestingly, even individuals who currently do not participate in any physical activity express a desire to have more time to start. Less popular activities, such as sports and "Other," show the lowest levels of engagement. Among the most chosen activities—walking and gym/strength training—the majority of participants express wanting more time for physical activity. 
 ```{r}
 physical_activity_by_want_time
+```
+
+From the graph below, we can see that a significant majority consider physical activity important, whereas a much smaller group believe it is not. This highlights a strong consensus among the surveyed group on the importance of staying physically active.
+```{r}
 no_of_people_importance
 ```
 
